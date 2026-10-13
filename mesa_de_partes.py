@@ -28,6 +28,7 @@ def registrar_expediente():
 #Agregado-----------------------------------------------------------------
 
 def buscar_expediente(lista_general):
+        # Busca un expediente comparando su código con el ingresado por el usuario.
     codigo = input("Ingrese el codigo del expediente: ")
 
     encontrado = False
