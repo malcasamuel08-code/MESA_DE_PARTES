@@ -1,3 +1,6 @@
+import os
+ARCHIVO_EXPEDIENTES = "expedientes.txt"
+
 def validar_dni(dni):
     """Valida que el DNI tenga exactamente 8 dígitos numéricos."""
     if len(dni) == 8 and dni.isdigit():
@@ -26,7 +29,23 @@ def registrar_expediente():
     return expediente
 
 #Agregado-----------------------------------------------------------------
+def guardar_expedientes(lista_general):
+    with open(ARCHIVO_EXPEDIENTES, "w", encoding="utf-8") as archivo:
+        for expediente in lista_general:
+            archivo.write(",".join(expediente) + "\n")
 
+def cargar_expedientes():
+    lista_general = []
+
+    if os.path.exists(ARCHIVO_EXPEDIENTES):
+        with open(ARCHIVO_EXPEDIENTES, "r", encoding="utf-8") as archivo:
+            for linea in archivo:
+                expediente = linea.strip().split(",")
+                if len(expediente) == 4:
+                    lista_general.append(expediente)
+
+    return lista_general
+            
 def buscar_expediente(lista_general):
         # Busca un expediente comparando su código con el ingresado por el usuario.
     codigo = input("Ingrese el codigo del expediente: ")
@@ -61,7 +80,7 @@ def ordenar_expedientes(lista_general):
 # Menú principal interactivo básico con estructura repetitiva y condicional
 
 def main():
-    lista_general = []
+    lista_general = cargar_expedientes()
     opcion = ""
 
     while opcion != "5":
@@ -78,6 +97,7 @@ def main():
         if opcion == "1":
             nuevo = registrar_expediente()
             lista_general.append(nuevo)
+            guardar_expedientes(lista_general)
         elif opcion == "2":
             if len(lista_general) == 0:
                 print("\nNo hay expedientes registrados todavía.")
